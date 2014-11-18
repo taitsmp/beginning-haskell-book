@@ -23,13 +23,30 @@ purchaseValue purchaseId =
                                      Just price -> Just $ (fromInteger n) * price
 -}
 
+{-
 purchaseValue :: Integer -> Maybe Double
 purchaseValue purchaseId =
   numberItemsByPurchaseId purchaseId `thenDo` (\n ->
   productIdByPurchaseId purchaseId   `thenDo` (\productId ->
   priceByProductId productId         `thenDo` (\price ->
   Just $ fromInteger n * price       )))
+-}
 
+-- exercise
+purchaseValue :: Integer -> Maybe Double
+purchaseValue purchaseId = 
+ numberItemsByPurchaseId purchaseId >>= (\n -> 
+ productIdByPurchaseId purchaseId   >>= (\productId ->
+ priceByProductId productId         >>= (\price -> 
+ return $ fromInteger n * price )))
+
+-- wanted to try typing this out myself without looking. 
+purchaseValueWithDo' :: Integer -> Maybe Double
+purchaseValueWithDo' purchaseId = do
+  n <- numberItemsByPurchaseId purchaseId
+  productId <- productIdByPurchaseId purchaseId
+  price <- priceByProductId productId
+  return $ fromInteger n * price
 
 purchasesByClientId :: Integer -> [Integer]
 purchasesByClientId = error "Unimplemented"
